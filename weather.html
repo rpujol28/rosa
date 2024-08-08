@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima Actual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f0f0f0;
+        }
+        #weather {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Clima Actual</h1>
+    <div id="weather">Cargando...</div>
+
+    <script>
+        const apiKey = '6fe42a65108d5e73ac92d0096fe73d3d'; // Reemplaza con tu clave API de OpenWeatherMap
+        const city = 'Salou'; // Puedes cambiar la ciudad según tus necesidades
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=es`;
+
+        async function obtenerClima() {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.cod === 200) {
+                    const temperatura = data.main.temp;
+                    const descripcion = data.weather[0].description;
+                    document.getElementById('weather').textContent = `En ${city} hace ${temperatura}°C con ${descripcion}.`;
+                } else {
+                    document.getElementById('weather').textContent = 'No se pudo obtener el clima.';
+                }
+            } catch (error) {
+                document.getElementById('weather').textContent = 'Error al obtener el clima.';
+                console.error('Error:', error);
+            }
+        }
+
+        window.onload = obtenerClima;
+    </script>
+</body>
+</html>
